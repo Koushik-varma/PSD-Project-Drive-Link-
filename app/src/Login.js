@@ -7,14 +7,35 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [errors, setErrors] = useState({ email: '', password: '' }); // Add validation errors
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePassword = (password) => {
+    return password.length >= 8;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Perform validation
+    const emailError = validateEmail(email) ? '' : 'Please enter a valid email.';
+    const passwordError = validatePassword(password) ? '' : 'Password must be at least 8 characters long.';
+    setErrors({ email: emailError, password: passwordError });
+
+    if (emailError || passwordError) {
+      setMessage('Please fix the errors.');
+      return;
+    }
+
     try {
       const response = await axios.post('/api/login', { email, password });
       setMessage(response.data.message);
     } catch (error) {
-      setMessage('Error: ' + error.response?.data.detail || 'An error occurred');
+      setMessage('Error: ' + (error.response?.data.detail || 'An error occurred'));
     }
   };
 
@@ -40,7 +61,7 @@ const Login = () => {
         alignItems: "center"
       }}>
         <h2 className="text-2xl font-bold text-center mb-6">Welcome Back</h2>
-        <form onSubmit={handleSubmit} style={{ width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}> {/* Center the form items */}
+        <form onSubmit={handleSubmit} style={{ width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
           <div className="mb-4 w-full">
             <label className="block text-sm font-semibold">Email</label>
             <input
@@ -50,6 +71,7 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
+            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>} {/* Show email error */}
           </div>
           <div className="mb-4 w-full">
             <label className="block text-sm font-semibold">Password</label>
@@ -60,6 +82,7 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>} {/* Show password error */}
           </div>
           <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition">
             Login
