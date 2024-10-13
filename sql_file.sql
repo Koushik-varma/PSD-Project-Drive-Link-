@@ -38,8 +38,21 @@ CREATE TABLE `tblpages` (
 INSERT INTO `tblpages` (`id`, `PageName`, `type`, `detail`) VALUES
 (1, 'Terms and Conditions', 'terms', ''),
 (2, 'Privacy Policy', 'privacy', ''),
-(3, 'About Us ', 'aboutus', 'Hello World'),
+(3, 'About Us', 'aboutus', 'Hello World'),
 (4, 'FAQs', 'faqs', 'Hello World');
+
+-- Table structure for table `admin`
+
+CREATE TABLE `admin` (
+  `id` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table `admin`
+
+INSERT INTO `admin` (`id`, `username`, `password`) VALUES
+(1, 'admin', 'adminpasswordhash');
 
 -- Indexes for dumped tables
 
@@ -55,6 +68,10 @@ ALTER TABLE `tblcontactusquery`
 ALTER TABLE `tblpages`
   ADD PRIMARY KEY (`id`);
 
+-- Indexes for table `admin`
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`id`);
+
 -- AUTO_INCREMENT for dumped tables
 
 -- AUTO_INCREMENT for table `tblcontactusinfo`
@@ -68,3 +85,7 @@ ALTER TABLE `tblcontactusquery`
 -- AUTO_INCREMENT for table `tblpages`
 ALTER TABLE `tblpages`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+-- AUTO_INCREMENT for table `admin`
+ALTER TABLE `admin`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
