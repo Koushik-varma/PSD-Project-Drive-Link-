@@ -54,6 +54,29 @@ CREATE TABLE `admin` (
 INSERT INTO `admin` (`id`, `username`, `password`) VALUES
 (1, 'admin', 'adminpasswordhash');
 
+-- Table structure for table `tblbooking`
+
+CREATE TABLE `tblbooking` (
+  `id` int(11),
+  `userEmail` varchar(100),
+  `VehicleId` int(11),
+  `FromDate` varchar(20),
+  `ToDate` varchar(20),
+  `message` varchar(255),
+  `Status` int(11),
+  `PostingDate` timestamp DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Table structure for table `tblbrands`
+
+CREATE TABLE `tblbrands` (
+  `id` int(11),
+  `BrandName` varchar(120),
+  `CreationDate` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `UpdationDate` timestamp DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
 -- Indexes for dumped tables
 
 -- Indexes for table `tblcontactusinfo`
@@ -72,6 +95,15 @@ ALTER TABLE `tblpages`
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`id`);
 
+-- Indexes for table `tblbooking`
+ALTER TABLE `tblbooking`
+  ADD PRIMARY KEY (`id`);
+
+-- Indexes for table `tblbrands`
+ALTER TABLE `tblbrands`
+  ADD PRIMARY KEY (`id`);
+
+
 -- AUTO_INCREMENT for dumped tables
 
 -- AUTO_INCREMENT for table `tblcontactusinfo`
@@ -89,3 +121,11 @@ ALTER TABLE `tblpages`
 -- AUTO_INCREMENT for table `admin`
 ALTER TABLE `admin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+-- AUTO_INCREMENT for table `tblbooking`
+ALTER TABLE `tblbooking`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+-- AUTO_INCREMENT for table `tblbrands`
+ALTER TABLE `tblbrands`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
