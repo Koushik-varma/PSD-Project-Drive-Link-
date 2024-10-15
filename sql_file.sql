@@ -76,6 +76,42 @@ CREATE TABLE `tblbrands` (
   `UpdationDate` timestamp DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- Table structure for table `tblsubscribers`
+--
+
+CREATE TABLE `tblsubscribers` (
+  `id` int(11) NOT NULL,
+  `SubscriberEmail` varchar(120) DEFAULT NULL,
+  `PostingDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Table structure for table `tbltestimonial`
+--
+
+CREATE TABLE `tbltestimonial` (
+  `id` int(11) NOT NULL,
+  `UserEmail` varchar(100) NOT NULL,
+  `Testimonial` mediumtext NOT NULL,
+  `PostingDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Table structure for table `tblusers`
+--
+
+CREATE TABLE `tblusers` (
+  `id` int(11) NOT NULL,
+  `FullName` varchar(120) DEFAULT NULL,
+  `EmailId` varchar(100) DEFAULT NULL,
+  `Password` varchar(100) DEFAULT NULL,
+  `ContactNo` char(11) DEFAULT NULL,
+  `dob` varchar(100) DEFAULT NULL,
+  `Address` varchar(255) DEFAULT NULL,
+  `City` varchar(100) DEFAULT NULL,
+  `Country` varchar(100) DEFAULT NULL,
+  `RegDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdationDate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Indexes for dumped tables
 
@@ -103,6 +139,21 @@ ALTER TABLE `tblbooking`
 ALTER TABLE `tblbrands`
   ADD PRIMARY KEY (`id`);
 
+-- Indexes for table `tblsubscribers`
+
+ALTER TABLE `tblsubscribers`
+  ADD PRIMARY KEY (`id`);
+
+-- Indexes for table `tbltestimonial`
+
+ALTER TABLE `tbltestimonial`
+  ADD PRIMARY KEY (`id`);
+
+
+-- Indexes for table `tblusers`
+
+ALTER TABLE `tblusers`
+  ADD PRIMARY KEY (`id`);
 
 -- AUTO_INCREMENT for dumped tables
 
@@ -128,4 +179,16 @@ ALTER TABLE `tblbooking`
 
 -- AUTO_INCREMENT for table `tblbrands`
 ALTER TABLE `tblbrands`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+-- AUTO_INCREMENT for table `tblsubscribers`
+ALTER TABLE `tblsubscribers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+-- AUTO_INCREMENT for table `tbltestimonial`
+ALTER TABLE `tbltestimonial`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+-- AUTO_INCREMENT for table `tblusers`
+ALTER TABLE `tblusers`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
