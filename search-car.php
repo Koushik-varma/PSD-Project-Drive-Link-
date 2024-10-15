@@ -124,3 +124,52 @@ foreach($results as $result)
         </div>
       <?php }} ?>
          </div>
+      <!--Side-Bar-->
+      <aside class="col-md-3 col-md-pull-9">
+      <div class="sidebar_widget">
+          <div class="widget_heading">
+            <h5><i class="fa fa-filter" aria-hidden="true"></i> Find Your  Car </h5>
+          </div>
+          <div class="sidebar_filter">
+          <form action="search-carresult.php" method="post">
+            <div class="form-group select">
+                <select class="form-control" name="brand">
+                    <option>Select Brand</option>
+                    <?php
+                    $sql = "SELECT * FROM tblbrands";
+                    $query = $dbh->prepare($sql);
+                    $query->execute();
+                    $results = $query->fetchAll(PDO::FETCH_OBJ);
+                    if ($query->rowCount() > 0) {
+                        foreach ($results as $result) { ?>
+                            <option value="<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->BrandName); ?></option>
+                        <?php }
+                    } ?>
+                </select>
+            </div>
+
+            <div class="form-group select">
+                <select class="form-control" name="fueltype">
+                    <option>Select Fuel Type</option>
+                    <option value="Petrol">Petrol</option>
+                    <option value="Diesel">Diesel</option>
+                    <option value="CNG">CNG</option>
+                </select>
+            </div>
+
+            <!-- Number of Seats Input -->
+            <div class="form-group">
+                <label for="seats">Number of Seats</label>
+                <input type="number" class="form-control" name="seats" placeholder="Number of seats" min="1">
+            </div>
+
+            <!-- Price per Day Input -->
+            <div class="form-group">
+                <label for="price">Price Per Day</label>
+                <input type="number" class="form-control" name="price" placeholder="Price per day" min="0">
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-block"><i class="fa fa-search" aria-hidden="true"></i> Search Car</button>
+            </div>
+          </form>
