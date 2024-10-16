@@ -102,7 +102,89 @@ error_reporting(0);
         <!-- /Listing -->
         
       </div>
+
+      <!--Side-Bar-->
+      <aside class="col-md-3 col-md-pull-9">
+        <div class="sidebar_widget">
+          <div class="widget_heading">
+            <h5><i class="fa fa-filter" aria-hidden="true"></i> Find Your Car </h5>
+          </div>
+          <div class="sidebar_filter">
+            <form action="search-carresult.php" method="post">
+              <div class="form-group select">
+                <select class="form-control" name="brand">
+                  <option>Select Brand</option>
+                  <?php $sql = "SELECT * from tblbrands ";
+                  $query = $dbh -> prepare($sql);
+                  $query->execute();
+                  $results=$query->fetchAll(PDO::FETCH_OBJ);
+                  if($query->rowCount() > 0)
+                  {
+                  foreach($results as $result)
+                  { ?>
+                  <option value="<?php echo htmlentities($result->id);?>"><?php echo htmlentities($result->BrandName);?></option>
+                  <?php }} ?>
+                </select>
+              </div>
+              <div class="form-group select">
+                <select class="form-control" name="fueltype">
+                  <option>Select Fuel Type</option>
+                  <option value="Petrol">Petrol</option>
+                  <option value="Diesel">Diesel</option>
+                  <option value="CNG">CNG</option>
+                </select>
+              </div>
+              <div class="form-group select">
+                <select class="form-control" name="price">
+                  <option>Select Price Range</option>
+                  <option value="100">100-200</option>
+                  <option value="200">200-300</option>
+                  <option value="300">300-400</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-block">Search</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </aside>
+      <!-- /Side-Bar--> 
+      
     </div>
   </div>
 </section>
 <!-- /Listings Section --> 
+
+<!--Footer -->
+<?php include('includes/footer.php');?>
+<!-- /Footer--> 
+
+<!--Back to top-->
+<div id="back-top" class="back-top"> 
+  <a href="#top"><i class="fa fa-angle-up" aria-hidden="true"></i> </a> 
+</div>
+<!--/Back to top--> 
+
+<!--Login-Form -->
+<?php include('includes/login.php');?>
+
+<!--Register-Form -->
+<?php include('includes/registration.php');?>
+
+<!--Forgot-password-Form -->
+<?php include('includes/forgotpassword.php');?>
+
+<!-- Scripts --> 
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script> 
+<script src="assets/js/interface.js"></script> 
+<!--Switcher-->
+<script src="assets/switcher/js/switcher.js"></script>
+<!--bootstrap-slider-JS--> 
+<script src="assets/js/bootstrap-slider.min.js"></script> 
+<!--Slider-JS--> 
+<script src="assets/js/slick.min.js"></script> 
+<script src="assets/js/owl.carousel.min.js"></script>
+</body>
+</html>
