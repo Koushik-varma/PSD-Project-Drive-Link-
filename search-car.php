@@ -173,3 +173,44 @@ foreach($results as $result)
                 <button type="submit" class="btn btn-block"><i class="fa fa-search" aria-hidden="true"></i> Search Car</button>
             </div>
           </form>
+
+          <?php
+$brand = $_POST['brand'];
+$fueltype = $_POST['fueltype'];
+$seats = $_POST['seats'];
+$price = $_POST['price'];
+
+// Build the query with additional conditions for seats and price
+$sql = "SELECT tblvehicles.*, tblbrands.BrandName, tblbrands.id as bid FROM tblvehicles
+        JOIN tblbrands ON tblbrands.id = tblvehicles.VehiclesBrand
+        WHERE tblvehicles.VehiclesBrand = :brand 
+        AND tblvehicles.FuelType = :fueltype";
+
+// Add condition for number of seats if it is set by the user
+if (!empty($seats)) {
+    $sql .= " AND tblvehicles.SeatingCapacity = :seats";
+}
+
+// Add condition for price per day if it is set by the user
+if (!empty($price)) {
+    $sql .= " AND tblvehicles.PricePerDay <= :price";
+}
+
+$query = $dbh->prepare($sql);
+
+// Bind the parameters for brand and fuel type
+$query->bindParam(':brand', $brand, PDO::PARAM_STR);
+$query->bindParam(':fueltype', $fueltype, PDO::PARAM_STR);
+
+// Bind the parameters for seats and price if they were input by the user
+if (!empty($seats)) {
+    $query->bindParam(':seats', $seats, PDO::PARAM_INT);
+}
+
+if (!empty($price)) {
+    $query->bindParam(':price', $price, PDO::PARAM_INT);
+}
+
+$query->execute();
+$results = $query->fetchAll(PDO::FETCH_OBJ);
+?>
