@@ -8,7 +8,7 @@ header('location:index.php');
 }
 else{
 if(isset($_POST['updateprofile']))
-  {
+{
 $name=$_POST['fullname'];
 $mobileno=$_POST['mobilenumber'];
 $dob=$_POST['dob'];
@@ -30,7 +30,7 @@ $msg="Profile Updated Successfully";
 }
 
 ?>
-  <!DOCTYPE HTML>
+<!DOCTYPE HTML>
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
