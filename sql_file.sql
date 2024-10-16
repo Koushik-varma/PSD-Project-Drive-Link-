@@ -10,7 +10,7 @@ CREATE TABLE `tblcontactusinfo` (
 -- Dumping data for table `tblcontactusinfo`
 
 INSERT INTO `tblcontactusinfo` (`id`, `Address`, `EmailId`, `ContactNo`) VALUES
-(1, 'New Asgard', 'john@gmail.com', '7525724672');
+(1, 'PSV', 'psv@gmail.com', '7525724672');
 
 -- Table structure for table `tblcontactusquery`
 
@@ -113,6 +113,38 @@ CREATE TABLE `tblusers` (
   `UpdationDate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- Table structure for table `tblvehicles`
+
+CREATE TABLE `tblvehicles` (
+  `id` int(11) NOT NULL,
+  `VehiclesTitle` varchar(150) DEFAULT NULL,
+  `VehiclesBrand` int(11) DEFAULT NULL,
+  `VehiclesOverview` longtext,
+  `PricePerDay` float DEFAULT NULL,
+  `FuelType` varchar(100) DEFAULT NULL,
+  `ModelYear` int(6) DEFAULT NULL,
+  `SeatingCapacity` int(11) DEFAULT NULL,
+  `Vimage1` varchar(120) DEFAULT NULL,
+  `Vimage2` varchar(120) DEFAULT NULL,
+  `Vimage3` varchar(120) DEFAULT NULL,
+  `Vimage4` varchar(120) DEFAULT NULL,
+  `Vimage5` varchar(120) DEFAULT NULL,
+  `AirConditioner` int(11) DEFAULT NULL,
+  `PowerDoorLocks` int(11) DEFAULT NULL,
+  `AntiLockBrakingSystem` int(11) DEFAULT NULL,
+  `BrakeAssist` int(11) DEFAULT NULL,
+  `PowerSteering` int(11) DEFAULT NULL,
+  `DriverAirbag` int(11) DEFAULT NULL,
+  `PassengerAirbag` int(11) DEFAULT NULL,
+  `PowerWindows` int(11) DEFAULT NULL,
+  `CDPlayer` int(11) DEFAULT NULL,
+  `CentralLocking` int(11) DEFAULT NULL,
+  `CrashSensor` int(11) DEFAULT NULL,
+  `LeatherSeats` int(11) DEFAULT NULL,
+  `RegDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdationDate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 -- Indexes for dumped tables
 
 -- Indexes for table `tblcontactusinfo`
@@ -155,6 +187,11 @@ ALTER TABLE `tbltestimonial`
 ALTER TABLE `tblusers`
   ADD PRIMARY KEY (`id`);
 
+-- Indexes for table `tblvehicles`
+
+ALTER TABLE `tblvehicles`
+  ADD PRIMARY KEY (`id`);
+
 -- AUTO_INCREMENT for dumped tables
 
 -- AUTO_INCREMENT for table `tblcontactusinfo`
@@ -192,3 +229,8 @@ ALTER TABLE `tbltestimonial`
 -- AUTO_INCREMENT for table `tblusers`
 ALTER TABLE `tblusers`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+-- AUTO_INCREMENT for table `tblvehicles`
+ALTER TABLE `tblvehicles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+COMMIT;
