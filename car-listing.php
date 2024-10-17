@@ -79,28 +79,34 @@ error_reporting(0);
       <div class="col-md-9 col-md-push-3">
         <div class="result-sorting-wrapper">
           <div class="sorting-count">
-<?php 
-//Query for Listing count
+<?php
+// Query for Listing count
 $sql = "SELECT id from tblvehicles";
-$query = $dbh -> prepare($sql);
-$query->bindParam(':vhid',$vhid, PDO::PARAM_STR);
+$query = $dbh->prepare($sql);
 $query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-$cnt=$query->rowCount();
+if ($query->rowCount() > 0) {
+    $results = $query->fetchAll(PDO::FETCH_OBJ);
+    $cnt = $query->rowCount();
+    ?>
+    <p><span><?php echo htmlentities($cnt); ?> Listings</span></p>
+    <?php
+} else {
+    echo "No listings found.";
+}
 ?>
-<p><span><?php echo htmlentities($cnt);?> Listings</span></p>
 </div>
 </div>
 
-<?php $sql = "SELECT tblvehicles.*,tblbrands.BrandName,tblbrands.id as bid  from tblvehicles join tblbrands on tblbrands.id=tblvehicles.VehiclesBrand";
-$query = $dbh -> prepare($sql);
+<?php
+$sql = "SELECT tblvehicles.*, tblbrands.BrandName, tblbrands.id as bid 
+        FROM tblvehicles 
+        JOIN tblbrands ON tblbrands.id = tblvehicles.VehiclesBrand";
+$query = $dbh->prepare($sql);
 $query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-$cnt=1;
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{  ?>
+if ($query->rowCount() > 0) {
+    $results = $query->fetchAll(PDO::FETCH_OBJ);
+    foreach ($results as $result) {
+        ?>
         <div class="product-listing-m gray-bg">
           <div class="product-listing-img"><img src="admin/img/vehicleimages/<?php echo htmlentities($result->Vimage1);?>" class="img-responsive" alt="Image" /> </a> 
           </div>
@@ -115,7 +121,9 @@ foreach($results as $result)
             <a href="vehical-details.php?vhid=<?php echo htmlentities($result->id);?>" class="btn">View Details <span class="angle_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>
           </div>
         </div>
-      <?php }} ?>
+      <?php }} else {
+    echo "No listings found.";
+}?>
          </div>
       
       <!--Side-Bar-->
@@ -125,38 +133,58 @@ foreach($results as $result)
             <h5><i class="fa fa-filter" aria-hidden="true"></i> Find Your  Car </h5>
           </div>
           <div class="sidebar_filter">
-            <form action="search-carresult.php" method="post">
-              <div class="form-group select">
-                <select class="form-control" name="brand">
-                  <option>Select Brand</option>
+          <form action="search-carresult.php" method="post">
+    <!-- Brand Select -->
+    <div class="form-group select">
+        <label for="brand">Select Brand</label>
+        <select class="form-control" name="brand">
+            <option>Select Brand</option>
+            <?php
+            $sql = "SELECT * FROM tblbrands";
+            $query = $dbh->prepare($sql);
+            $query->execute();
+            $results = $query->fetchAll(PDO::FETCH_OBJ);
+            if ($query->rowCount() > 0) {
+                foreach ($results as $result) { ?>
+                    <option value="<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->BrandName); ?></option>
+                <?php }
+            } ?>
+        </select>
+    </div>
 
-                  <?php $sql = "SELECT * from  tblbrands ";
-$query = $dbh -> prepare($sql);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-$cnt=1;
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{       ?>  
-<option value="<?php echo htmlentities($result->id);?>"><?php echo htmlentities($result->BrandName);?></option>
-<?php }} ?>
-                 
-                </select>
-              </div>
-              <div class="form-group select">
-                <select class="form-control" name="fueltype">
-                  <option>Select Fuel Type</option>
-<option value="Petrol">Petrol</option>
-<option value="Diesel">Diesel</option>
-<option value="CNG">CNG</option>
-                </select>
-              </div>
-             
-              <div class="form-group">
-                <button type="submit" class="btn btn-block"><i class="fa fa-search" aria-hidden="true"></i> Search Car</button>
-              </div>
-            </form>
+    <!-- Fuel Type Select -->
+    <div class="form-group select">
+        <label for="fueltype">Select Fuel Type</label>
+        <select class="form-control" name="fueltype">
+            <option>Select Fuel Type</option>
+            <option value="Petrol">Petrol</option>
+            <option value="Diesel">Diesel</option>
+            <option value="CNG">CNG</option>
+        </select>
+    </div>
+
+    <!-- Seats Range Slider -->
+    <div class="form-group">
+        <label for="seats">Number of Seats</label>
+        <input type="range" class="form-control-range" id="seats" name="seats" min="2" max="7" step="1" value="4" 
+               oninput="document.getElementById('seatsOutput').value = this.value;">
+        <output id="seatsOutput">4</output> Seats
+    </div>
+
+    <!-- Price Per Day Range Slider -->
+    <div class="form-group">
+        <label for="price">Price Per Day</label>
+        <input type="range" class="form-control-range" id="price" name="price" min="0" max="200" step="5" value="100" 
+               oninput="document.getElementById('priceOutput').value = this.value;">
+        <output id="priceOutput">100</output> $
+    </div>
+
+    <!-- Submit Button -->
+    <div class="form-group">
+        <button type="submit" class="btn btn-block"><i class="fa fa-search" aria-hidden="true"></i> Search Car</button>
+    </div>
+</form>
+
           </div>
         </div>
 
