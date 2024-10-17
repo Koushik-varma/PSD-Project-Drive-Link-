@@ -112,35 +112,36 @@ error_reporting(0);
         if ($query->rowCount() > 0) {
             foreach ($results as $result) {
                 ?>
-                <div class="col-md-6">
-                    <div class="car-listing">
-                        <div class="car-img">
-                            <a href="vehical-details.php?vhid=<?php echo htmlentities($result->id);?>">
-                                <img src="admin/img/vehicleimages/<?php echo htmlentities($result->Vimage1);?>" alt="image">
-                            </a>
-                        </div>
-                        <div class="car-title">
-                            <h5>
-                                <a href="vehical-details.php?vhid=<?php echo htmlentities($result->id);?>">
-                                    <?php echo htmlentities($result->BrandName);?>, <?php echo htmlentities($result->VehiclesTitle);?>
-                                </a>
-                            </h5>
-                            <p class="price">$<?php echo htmlentities($result->PricePerDay);?> Per Day</p>
-                            <ul class="car-info">
-                                <li><i class="fa fa-user"></i> <?php echo htmlentities($result->SeatingCapacity);?> seats</li>
-                                <li><i class="fa fa-calendar"></i> <?php echo htmlentities($result->ModelYear);?> model</li>
-                                <li><i class="fa fa-car"></i> <?php echo htmlentities($result->FuelType);?></li>
-                            </ul>
-                            <a href="vehical-details.php?vhid=<?php echo htmlentities($result->id);?>" class="btn">View Details <span class="angle_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>
-                        </div>
-                    </div>
+                <!-- Create a separate container for each car listing -->
+        <div class="car-listing-container" style="margin-bottom: 20px; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9;">
+            <div class="car-listing">
+                <div class="car-img">
+                    <a href="vehical-details.php?vhid=<?php echo htmlentities($result->id);?>">
+                        <img src="admin/img/vehicleimages/<?php echo htmlentities($result->Vimage1);?>" alt="image" style="max-width: 100%; border-radius: 5px;">
+                    </a>
                 </div>
-                <?php
-            }
-        } else {
-            echo "<div class='col-md-12'><p>No cars found matching your criteria.</p></div>";
-        }
-        ?>
+                <div class="car-title">
+                    <h5>
+                        <a href="vehical-details.php?vhid=<?php echo htmlentities($result->id);?>">
+                            <?php echo htmlentities($result->BrandName);?>, <?php echo htmlentities($result->VehiclesTitle);?>
+                        </a>
+                    </h5>
+                    <p class="price">$<?php echo htmlentities($result->PricePerDay);?> Per Day</p>
+                    <ul class="car-info">
+                        <li><i class="fa fa-user"></i> <?php echo htmlentities($result->SeatingCapacity);?> seats</li>
+                        <li><i class="fa fa-calendar"></i> <?php echo htmlentities($result->ModelYear);?> model</li>
+                        <li><i class="fa fa-car"></i> <?php echo htmlentities($result->FuelType);?></li>
+                    </ul>
+                    <a href="vehical-details.php?vhid=<?php echo htmlentities($result->id);?>" class="btn">View Details <span class="angle_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>
+                </div>
+            </div>
+        </div> <!-- End of car listing container -->
+        <?php
+    }
+} else {
+    echo "<div class='col-md-12'><p>No cars found matching your criteria.</p></div>";
+}
+?>
          </div>
         </div>
       </div>
