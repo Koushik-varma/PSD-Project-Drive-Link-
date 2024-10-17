@@ -1,6 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 1.0.1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Oct 17, 2024 at 06:16 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +24,6 @@ SET time_zone = "+00:00";
 
 -- --------------------------------------------------------
 
---
 -- Table structure for table `admin`
 --
 
@@ -27,8 +31,8 @@ CREATE TABLE `admin` (
   `id` int(11) NOT NULL,
   `UserName` varchar(100) NOT NULL,
   `Password` varchar(100) NOT NULL,
-  `updationDate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `updationDate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `admin`
@@ -51,8 +55,8 @@ CREATE TABLE `tblbooking` (
   `ToDate` varchar(20) DEFAULT NULL,
   `message` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT NULL,
-  `PostingDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `PostingDate` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -63,9 +67,16 @@ CREATE TABLE `tblbooking` (
 CREATE TABLE `tblbrands` (
   `id` int(11) NOT NULL,
   `BrandName` varchar(120) NOT NULL,
-  `CreationDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `UpdationDate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `CreationDate` timestamp NULL DEFAULT current_timestamp(),
+  `UpdationDate` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `tblbrands`
+--
+
+INSERT INTO `tblbrands` (`id`, `BrandName`, `CreationDate`, `UpdationDate`) VALUES
+(1, 'Audi', '2024-10-17 00:43:45', NULL);
 
 -- --------------------------------------------------------
 
@@ -75,17 +86,17 @@ CREATE TABLE `tblbrands` (
 
 CREATE TABLE `tblcontactusinfo` (
   `id` int(11) NOT NULL,
-  `Address` tinytext,
+  `Address` tinytext DEFAULT NULL,
   `EmailId` varchar(255) DEFAULT NULL,
   `ContactNo` char(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `tblcontactusinfo`
 --
 
 INSERT INTO `tblcontactusinfo` (`id`, `Address`, `EmailId`, `ContactNo`) VALUES
-(1, 'New Asgard', 'john@gmail.com', '7525724672');
+(1, 'PSV', 'psv@gmail.com', '1234567890');
 
 -- --------------------------------------------------------
 
@@ -98,10 +109,10 @@ CREATE TABLE `tblcontactusquery` (
   `name` varchar(100) DEFAULT NULL,
   `EmailId` varchar(120) DEFAULT NULL,
   `ContactNumber` char(11) DEFAULT NULL,
-  `Message` longtext,
-  `PostingDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `Message` longtext DEFAULT NULL,
+  `PostingDate` timestamp NOT NULL DEFAULT current_timestamp(),
   `status` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -114,7 +125,7 @@ CREATE TABLE `tblpages` (
   `PageName` varchar(255) DEFAULT NULL,
   `type` varchar(255) NOT NULL DEFAULT '',
   `detail` longtext NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `tblpages`
@@ -135,8 +146,8 @@ INSERT INTO `tblpages` (`id`, `PageName`, `type`, `detail`) VALUES
 CREATE TABLE `tblsubscribers` (
   `id` int(11) NOT NULL,
   `SubscriberEmail` varchar(120) DEFAULT NULL,
-  `PostingDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `PostingDate` timestamp NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -148,9 +159,9 @@ CREATE TABLE `tbltestimonial` (
   `id` int(11) NOT NULL,
   `UserEmail` varchar(100) NOT NULL,
   `Testimonial` mediumtext NOT NULL,
-  `PostingDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `PostingDate` timestamp NOT NULL DEFAULT current_timestamp(),
   `status` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -168,9 +179,16 @@ CREATE TABLE `tblusers` (
   `Address` varchar(255) DEFAULT NULL,
   `City` varchar(100) DEFAULT NULL,
   `Country` varchar(100) DEFAULT NULL,
-  `RegDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `UpdationDate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `RegDate` timestamp NULL DEFAULT current_timestamp(),
+  `UpdationDate` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `tblusers`
+--
+
+INSERT INTO `tblusers` (`id`, `FullName`, `EmailId`, `Password`, `ContactNo`, `dob`, `Address`, `City`, `Country`, `RegDate`, `UpdationDate`) VALUES
+(1, 'Srinivasa Varma', 'psvarma@gmail.com', 'ee7b14b47c1dcef5297aefd04b6ea402', '1111111111', NULL, NULL, NULL, NULL, '2024-10-16 17:59:55', NULL);
 
 -- --------------------------------------------------------
 
@@ -182,7 +200,7 @@ CREATE TABLE `tblvehicles` (
   `id` int(11) NOT NULL,
   `VehiclesTitle` varchar(150) DEFAULT NULL,
   `VehiclesBrand` int(11) DEFAULT NULL,
-  `VehiclesOverview` longtext,
+  `VehiclesOverview` longtext DEFAULT NULL,
   `PricePerDay` float DEFAULT NULL,
   `FuelType` varchar(100) DEFAULT NULL,
   `ModelYear` int(6) DEFAULT NULL,
@@ -204,9 +222,16 @@ CREATE TABLE `tblvehicles` (
   `CentralLocking` int(11) DEFAULT NULL,
   `CrashSensor` int(11) DEFAULT NULL,
   `LeatherSeats` int(11) DEFAULT NULL,
-  `RegDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `UpdationDate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `RegDate` timestamp NOT NULL DEFAULT current_timestamp(),
+  `UpdationDate` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `tblvehicles`
+--
+
+INSERT INTO `tblvehicles` (`id`, `VehiclesTitle`, `VehiclesBrand`, `VehiclesOverview`, `PricePerDay`, `FuelType`, `ModelYear`, `SeatingCapacity`, `Vimage1`, `Vimage2`, `Vimage3`, `Vimage4`, `Vimage5`, `AirConditioner`, `PowerDoorLocks`, `AntiLockBrakingSystem`, `BrakeAssist`, `PowerSteering`, `DriverAirbag`, `PassengerAirbag`, `PowerWindows`, `CDPlayer`, `CentralLocking`, `CrashSensor`, `LeatherSeats`, `RegDate`, `UpdationDate`) VALUES
+(1, 'Q6', 1, 'Expensive car', 150, 'Diesel', 2023, 4, 'listing_img1.jpg', 'listing_img2.jpg', 'listing_img3.jpg', 'listing_img4.jpg', '', 1, 1, 1, 1, 1, 1, 1, 1, NULL, 1, 1, 1, '2024-10-17 00:45:32', NULL);
 
 --
 -- Indexes for dumped tables
@@ -292,7 +317,7 @@ ALTER TABLE `tblbooking`
 -- AUTO_INCREMENT for table `tblbrands`
 --
 ALTER TABLE `tblbrands`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tblcontactusinfo`
@@ -328,13 +353,13 @@ ALTER TABLE `tbltestimonial`
 -- AUTO_INCREMENT for table `tblusers`
 --
 ALTER TABLE `tblusers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tblvehicles`
 --
 ALTER TABLE `tblvehicles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
