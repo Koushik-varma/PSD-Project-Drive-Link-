@@ -97,6 +97,7 @@ CREATE TABLE `tblcontactusinfo` (
 
 INSERT INTO `tblcontactusinfo` (`id`, `Address`, `EmailId`, `ContactNo`) VALUES
 (1, 'PSV', 'psv@gmail.com', '1234567890');
+>>>>>>> be97597fb2916e8864427522673a003dc607b35c
 
 -- --------------------------------------------------------
 
@@ -134,11 +135,31 @@ CREATE TABLE `tblpages` (
 INSERT INTO `tblpages` (`id`, `PageName`, `type`, `detail`) VALUES
 (1, 'Terms and Conditions', 'terms', ''),
 (2, 'Privacy Policy', 'privacy', ''),
-(3, 'About Us ', 'aboutus', 'Hello World'),
+(3, 'About Us ', 'aboutus', '"Welcome to our Car Rental Portal! We offer a range of vehicles for rent, from economy to luxury, to meet all your transportation needs. 
+      Our mission is to provide hassle-free, reliable car rental services, ensuring that our customers have the best experience possible."'),
 (4, 'FAQs', 'faqs', 'Hello World');
 
 -- --------------------------------------------------------
+UPDATE `tblpages`
+SET `detail` = 
+'1. How do I book a car?
+To book a car, simply create an account, browse through the available listings, and choose the car you wish to rent. Select your dates and proceed to payment to confirm the booking.
 
+2. What documents do I need to rent a car?
+You will need a valid driver’s license, a government-issued ID (such as a passport or national ID), and a credit card for the security deposit and payment.
+
+3. Can I modify or cancel my booking?
+Yes, you can modify or cancel your booking from your account dashboard. Please note that modifications or cancellations are subject to the terms and conditions of the specific car owner.
+
+4. What happens if the car breaks down during my rental?
+If the car breaks down, contact the car owner immediately through the platform’s messaging system. They may provide assistance or a replacement vehicle depending on their policy.
+
+5. Is insurance included with the rental?
+Insurance policies vary depending on the car owner. Some rentals include insurance, while others may require you to purchase it separately.
+
+6. What payment methods do you accept?
+We accept all major credit cards, debit cards, and payment via secure third-party services such as PayPal.'
+WHERE `type` = 'faqs';
 --
 -- Table structure for table `tblsubscribers`
 --
