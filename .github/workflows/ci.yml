@@ -1,25 +1,25 @@
 name: Run Tests
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+on: [push, pull_request]
 
 jobs:
-  test:
+  phpunit-tests:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.2'  # Set PHP version to match your environment
-        tools: phpunit      # Directly install PHPUnit
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_mysql
 
-    - name: Run PHPUnit Tests
-      run: |
-        phpunit --configuration includes/tests/phpunit.xml
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y php-xml php-mbstring
+          
+      - name: Run PHPUnit tests
+        run: phpunit includes/tests
