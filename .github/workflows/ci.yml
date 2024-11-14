@@ -1,4 +1,4 @@
-name: Run Tests
+name: Run PHPUnit Tests
 
 on: [push, pull_request]
 
@@ -16,10 +16,19 @@ jobs:
           php-version: '8.2'
           extensions: pdo, pdo_mysql
 
-      - name: Install dependencies
+      - name: Download PHPUnit
         run: |
-          sudo apt-get update
-          sudo apt-get install -y php-xml php-mbstring
-          
+          wget -O phpunit https://phar.phpunit.de/phpunit-9.phar
+          chmod +x phpunit
+          sudo mv phpunit /usr/local/bin/phpunit
+
       - name: Run PHPUnit tests
         run: phpunit includes/tests
+
+      - name: Notify Success
+        if: success()
+        run: echo "All tests passed successfully!"
+
+      - name: Notify Failure
+        if: failure()
+        run: echo "One or more tests failed."
