@@ -23,7 +23,7 @@ jobs:
           sudo mv phpunit /usr/local/bin/phpunit
 
       - name: Run PHPUnit tests
-        run: phpunit test
+        run: phpunit tests
 
       - name: Notify Success
         if: success()
