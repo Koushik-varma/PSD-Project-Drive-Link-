@@ -109,3 +109,108 @@ echo "<strong>8. Dashboard Links Test:</strong> " . testDashboardLinks() . "<br>
 echo "<strong>9. Subscribers Count Test:</strong> " . testSubscribersCount(8) . "<br>"; // Replace 8 with your expected count
 
 ?>
+
+<?php
+
+use PHPUnit\Framework\TestCase;
+
+class VehicleControllerTest extends TestCase
+{
+    protected $vehicleController;
+
+    protected function setUp(): void
+    {
+        $this->vehicleController = new VehicleController();
+    }
+
+    public function testVehiclePostingValidSubmission()
+    {
+        $_POST = [
+            'vehicletitle' => 'Tesla Model S',
+            'brandname' => 'Tesla',
+            'vehicleoverview' => 'Electric car with autopilot.',
+            'priceperday' => '200',
+            'fueltype' => 'Electric',
+            'modelyear' => '2022',
+            'seatingcapacity' => '5',
+            'airconditioner' => '1',
+            'powersteering' => '1',
+            // Add other fields if required
+        ];
+        $_FILES['img1'] = ['name' => 'image1.jpg', 'tmp_name' => '/path/to/image1.jpg'];
+
+        $result = $this->vehicleController->postVehicle();
+        $this->assertTrue($result);
+    }
+
+    public function testVehiclePostingMissingRequiredField()
+    {
+        $_POST = [
+            'vehicletitle' => 'Tesla Model S',
+            'brandname' => 'Tesla',
+            // Missing price per day
+            'fueltype' => 'Electric',
+            'modelyear' => '2022',
+            'seatingcapacity' => '5',
+        ];
+        $_FILES['img1'] = ['name' => 'image1.jpg', 'tmp_name' => '/path/to/image1.jpg'];
+
+        $result = $this->vehicleController->postVehicle();
+        $this->assertFalse($result, 'Expected false due to missing required field');
+    }
+
+    public function testVehiclePostingInvalidFileUpload()
+    {
+        $_POST = [
+            'vehicletitle' => 'Tesla Model S',
+            'brandname' => 'Tesla',
+            'priceperday' => '200',
+            'fueltype' => 'Electric',
+            'modelyear' => '2022',
+            'seatingcapacity' => '5',
+        ];
+        $_FILES['img1'] = ['name' => 'file.txt', 'tmp_name' => '/path/to/file.txt']; // Invalid file type
+
+        $result = $this->vehicleController->postVehicle();
+        $this->assertFalse($result, 'Expected false due to invalid file type');
+    }
+}
+
+<?php
+
+use PHPUnit\Framework\TestCase;
+
+class UserControllerTest extends TestCase
+{
+    protected $userController;
+
+    protected function setUp(): void
+    {
+        $this->userController = new UserController();
+    }
+
+    public function testDisplayRegisteredUsersDataLoad()
+    {
+        $users = $this->userController->getUsers();
+        $this->assertIsArray($users, 'Expected an array of users');
+        $this->assertNotEmpty($users, 'Expected user list to not be empty');
+    }
+
+    public function testDisplayRegisteredUsersEmptyList()
+    {
+        // Assuming clearUsers() clears the tblusers table for testing purposes.
+        $this->userController->clearUsers();
+        $users = $this->userController->getUsers();
+        $this->assertEmpty($users, 'Expected an empty user list');
+    }
+
+    public function testDeleteUserFromList()
+    {
+        // Assuming addUser() adds a test user to the tblusers table.
+        $userId = $this->userController->addUser('John Doe', 'johndoe@example.com');
+        $result = $this->userController->deleteUser($userId);
+        
+        $this->assertTrue($result, 'Expected user to be deleted successfully');
+        $this->assertEmpty($this->userController->getUserById($userId), 'Expected no user with the deleted ID');
+    }
+}
