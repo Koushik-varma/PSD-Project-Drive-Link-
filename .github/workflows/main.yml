@@ -1,6 +1,10 @@
-name: Run PHPUnit Tests
+name: CI/CD Pipeline with PHPUnit Tests and Deployment
 
-on: [push, pull_request]
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
 
 jobs:
   phpunit-tests:
@@ -23,12 +27,52 @@ jobs:
           sudo mv phpunit /usr/local/bin/phpunit
 
       - name: Run PHPUnit tests
-        run: phpunit tests
+        run: phpunit tests > test-results.txt
 
-      - name: Notify Success
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: phpunit-test-results
+          path: test-results.txt
+
+      - name: Notify Test Results
+        if: success() || failure()
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "All tests passed successfully!";
+          else
+            echo "One or more tests failed. Please check the test results.";
+          fi
+
+  deploy:
+    needs: phpunit-tests
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && success()
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH for Deployment
+        env:
+          SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          echo "$SSH_KEY" > private_key.pem
+          chmod 600 private_key.pem
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to Server
+        env:
+          SERVER: ${{ secrets.SERVER_IP }}
+          USER: ${{ secrets.SERVER_USER }}
+        run: |
+          ssh -i private_key.pem $USER@$SERVER "cd /path/to/deployment && git pull origin main && php artisan migrate"
+
+      - name: Notify Deployment Status
         if: success()
-        run: echo "All tests passed successfully!"
-
-      - name: Notify Failure
+        run: echo "Deployment successful!"
+        
+      - name: Notify Deployment Failure
         if: failure()
-        run: echo "One or more tests failed."
+        run: echo "Deployment failed. Check logs for details."
