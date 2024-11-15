@@ -22,9 +22,6 @@ jobs:
         php-version: '8.1'  # Specify the PHP version you want to use
         extensions: mbstring, intl  # List any necessary PHP extensions
 
-    - name: Install Composer dependencies
-      run: composer install  # Installs the dependencies defined in your composer.json
-
     - name: Run PHPUnit tests
       run: vendor/bin/phpunit --configuration phpunit.xml --testsuite tests  # Run PHPUnit tests from the tests folder
 
