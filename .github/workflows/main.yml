@@ -1,10 +1,6 @@
-name: CI/CD Pipeline with PHPUnit Tests and Deployment
+name: Run PHPUnit Tests
 
-on: 
-  push:
-    branches:
-      - main
-  pull_request:
+on: [push, pull_request]
 
 jobs:
   phpunit-tests:
@@ -27,52 +23,12 @@ jobs:
           sudo mv phpunit /usr/local/bin/phpunit
 
       - name: Run PHPUnit tests
-        run: phpunit tests > test-results.txt
+        run: phpunit tests
 
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v3
-        with:
-          name: phpunit-test-results
-          path: test-results.txt
-
-      - name: Notify Test Results
-        if: success() || failure()
-        run: |
-          if [ "${{ job.status }}" == "success" ]; then
-            echo "All tests passed successfully!";
-          else
-            echo "One or more tests failed. Please check the test results.";
-          fi
-
-  deploy:
-    needs: phpunit-tests
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && success()
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup SSH for Deployment
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Deploy to Server
-        env:
-          SERVER_IP: ${{ secrets.SERVER_IP }}
-          SERVER_USER: ${{ secrets.SERVER_USER }}
-        run: |
-          ssh $SERVER_USER@$SERVER_IP << 'EOF'
-            cd /path/to/deployment
-            git pull origin main
-            php artisan migrate
-          EOF
-
-      - name: Notify Deployment Success
+      - name: Notify Success
         if: success()
-        run: echo "Deployment successful!"
+        run: echo "All tests passed successfully!"
 
-      - name: Notify Deployment Failure
+      - name: Notify Failure
         if: failure()
-        run: echo "Deployment failed. Check logs for details."
+        run: echo "One or more tests failed."
