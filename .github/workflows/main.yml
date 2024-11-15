@@ -23,10 +23,10 @@ jobs:
         extensions: mbstring, intl  # List any necessary PHP extensions
 
     - name: Install Composer dependencies
-      run: composer install
+      run: composer install  # Installs the dependencies defined in your composer.json
 
     - name: Run PHPUnit tests
-      run: vendor/bin/phpunit --configuration phpunit.xml --testsuite tests  # Adjust the path to 'tests' folder
+      run: vendor/bin/phpunit --configuration phpunit.xml --testsuite tests  # Run PHPUnit tests from the tests folder
 
     - name: Check code style (optional)
-      run: vendor/bin/phpcs --standard=PSR12 src  # Assuming you use PHP_CodeSniffer
+      run: vendor/bin/phpcs --standard=PSR12 src  # Assuming you use PHP_CodeSniffer for code style checking
