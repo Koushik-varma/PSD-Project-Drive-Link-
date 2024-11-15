@@ -25,7 +25,8 @@ jobs:
             composer-
 
       - name: Install dependencies
-        run: composer install --no-progress --no-suggest
+        run: composer install --no-progress
+        working-directory: ./path/to/your/project  # Optional: Use this if your composer.json is in a subdirectory
 
       - name: Run PHPUnit tests
         run: vendor/bin/phpunit --verbose tests
