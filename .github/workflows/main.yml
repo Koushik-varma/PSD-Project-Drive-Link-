@@ -53,26 +53,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up SSH for Deployment
-        env:
-          SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        run: |
-          echo "$SSH_KEY" > private_key.pem
-          chmod 600 private_key.pem
-          mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+      - name: Setup SSH for Deployment
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Deploy to Server
         env:
-          SERVER: ${{ secrets.SERVER_IP }}
-          USER: ${{ secrets.SERVER_USER }}
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
         run: |
-          ssh -i private_key.pem $USER@$SERVER "cd /path/to/deployment && git pull origin main && php artisan migrate"
+          ssh $SERVER_USER@$SERVER_IP << 'EOF'
+            cd /path/to/deployment
+            git pull origin main
+            php artisan migrate
+          EOF
 
-      - name: Notify Deployment Status
+      - name: Notify Deployment Success
         if: success()
         run: echo "Deployment successful!"
-        
+
       - name: Notify Deployment Failure
         if: failure()
         run: echo "Deployment failed. Check logs for details."
