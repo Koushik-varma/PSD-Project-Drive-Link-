@@ -1,0 +1,60 @@
+<?php
+session_start();
+error_reporting(0);
+include('includes/config.php');
+if(strlen($_SESSION['alogin'])==0)
+{   
+    header('location:index.php');
+}
+else{ 
+
+if(isset($_POST['submit']))
+{
+    $vehicletitle=$_POST['vehicletitle'];
+    $brand=$_POST['brandname'];
+    $vehicleoverview=$_POST['vehicalorcview'];
+    $priceperday=$_POST['priceperday'];
+    $fueltype=$_POST['fueltype'];
+    $modelyear=$_POST['modelyear'];
+    $seatingcapacity=$_POST['seatingcapacity'];
+    $airconditioner=$_POST['airconditioner'];
+    $powerdoorlocks=$_POST['powerdoorlocks'];
+    $antilockbrakingsys=$_POST['antilockbrakingsys'];
+    $brakeassist=$_POST['brakeassist'];
+    $powersteering=$_POST['powersteering'];
+    $driverairbag=$_POST['driverairbag'];
+    $passengerairbag=$_POST['passengerairbag'];
+    $powerwindow=$_POST['powerwindow'];
+    $cdplayer=$_POST['cdplayer'];
+    $centrallocking=$_POST['centrallocking'];
+    $crashcensor=$_POST['crashcensor'];
+    $leatherseats=$_POST['leatherseats'];
+    $id=intval($_GET['id']);
+
+    $sql="update tblvehicles set VehiclesTitle=:vehicletitle,VehiclesBrand=:brand,VehiclesOverview=:vehicleoverview,PricePerDay=:priceperday,FuelType=:fueltype,ModelYear=:modelyear,SeatingCapacity=:seatingcapacity,AirConditioner=:airconditioner,PowerDoorLocks=:powerdoorlocks,AntiLockBrakingSystem=:antilockbrakingsys,BrakeAssist=:brakeassist,PowerSteering=:powersteering,DriverAirbag=:driverairbag,PassengerAirbag=:passengerairbag,PowerWindows=:powerwindow,CDPlayer=:cdplayer,CentralLocking=:centrallocking,CrashSensor=:crashcensor,LeatherSeats=:leatherseats where id=:id ";
+    $query = $dbh->prepare($sql);
+    $query->bindParam(':vehicletitle',$vehicletitle,PDO::PARAM_STR);
+    $query->bindParam(':brand',$brand,PDO::PARAM_STR);
+    $query->bindParam(':vehicleoverview',$vehicleoverview,PDO::PARAM_STR);
+    $query->bindParam(':priceperday',$priceperday,PDO::PARAM_STR);
+    $query->bindParam(':fueltype',$fueltype,PDO::PARAM_STR);
+    $query->bindParam(':modelyear',$modelyear,PDO::PARAM_STR);
+    $query->bindParam(':seatingcapacity',$seatingcapacity,PDO::PARAM_STR);
+    $query->bindParam(':airconditioner',$airconditioner,PDO::PARAM_STR);
+    $query->bindParam(':powerdoorlocks',$powerdoorlocks,PDO::PARAM_STR);
+    $query->bindParam(':antilockbrakingsys',$antilockbrakingsys,PDO::PARAM_STR);
+    $query->bindParam(':brakeassist',$brakeassist,PDO::PARAM_STR);
+    $query->bindParam(':powersteering',$powersteering,PDO::PARAM_STR);
+    $query->bindParam(':driverairbag',$driverairbag,PDO::PARAM_STR);
+    $query->bindParam(':passengerairbag',$passengerairbag,PDO::PARAM_STR);
+    $query->bindParam(':powerwindow',$powerwindow,PDO::PARAM_STR);
+    $query->bindParam(':cdplayer',$cdplayer,PDO::PARAM_STR);
+    $query->bindParam(':centrallocking',$centrallocking,PDO::PARAM_STR);
+    $query->bindParam(':crashcensor',$crashcensor,PDO::PARAM_STR);
+    $query->bindParam(':leatherseats',$leatherseats,PDO::PARAM_STR);
+    $query->bindParam(':id',$id,PDO::PARAM_STR);
+    $query->execute();
+
+    $msg="Data updated successfully";
+}
+?>
