@@ -13,7 +13,7 @@ error_reporting(0);
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="keywords" content="">
 <meta name="description" content="">
-<title>Car Rental Portal</title>
+<title>Drive-Link</title>
 <!--Bootstrap -->
 <link rel="stylesheet" href="assets/css/bootstrap.min.css" type="text/css">
 <link rel="stylesheet" href="assets/css/style.css" type="text/css">
@@ -117,6 +117,89 @@ foreach($results as $result)
     </div>
   </div>
 </section>
+
+<!-- Chatbot Floating Button -->
+<div id="chatbot-button" style="position: fixed; bottom: 20px; right: 20px; background-color: #007bff; color: white; padding: 15px; border-radius: 50%; cursor: pointer; z-index: 1000;">
+  <i class="fa fa-comments" aria-hidden="true"></i>
+</div>
+
+<!-- Chatbot Window (hidden by default) -->
+<div id="chatbot-window" style="display:none; position: fixed; bottom: 80px; right: 20px; width: 400px; height: 500px; background: #fff; border: 1px solid #ccc; padding: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 999;">
+  <div style="height: 90%; overflow-y: auto;" id="chatbot-content">
+    <!-- The chatbot messages will be displayed here -->
+  </div>
+  <input type="text" id="user-message" style="width: 100%; padding: 10px;" placeholder="Type your message here..." />
+  <button onclick="sendMessage()" style="width: 100%; padding: 10px; background-color: #007bff; color: white;">Send</button>
+</div>
+
+<!-- JavaScript to control the chatbot popup and communication -->
+<script>
+// Function to open the chatbot window when the button is clicked
+document.getElementById("chatbot-button").addEventListener("click", function() {
+  var chatbotWindow = document.getElementById("chatbot-window");
+  var chatbotContent = document.getElementById("chatbot-content");
+
+  // Open the chat window and clear previous conversation if it's not already open
+  if (chatbotWindow.style.display === 'none') {
+    chatbotWindow.style.display = 'block'; // Show the window
+    chatbotContent.innerHTML = ''; // Clear previous conversation
+  } else {
+    chatbotWindow.style.display = 'none'; // Hide the window
+  }
+});
+
+// Function to send the user's message to PHP and handle the response
+function sendMessage() {
+  var userMessage = document.getElementById("user-message").value.trim();  // Get the user message and remove leading/trailing spaces
+  
+  // Check if the message is empty
+  if (userMessage === '') {
+    return;  // Do nothing if the message is empty
+  }
+
+  // Add the user message to the chat
+  var userMessageDiv = document.createElement("div");
+  userMessageDiv.textContent = "You: " + userMessage;
+  document.getElementById("chatbot-content").appendChild(userMessageDiv);
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "ticket_bot.php", true);
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      var botResponse = JSON.parse(xhr.responseText);  // Get the response from PHP
+
+      // Log the response for debugging purposes
+      console.log("Bot response: ", botResponse);
+
+      // Add the bot's response to the chat
+      var botMessageDiv = document.createElement("div");
+      botMessageDiv.textContent = "Bot: " + botResponse.reply;
+      document.getElementById("chatbot-content").appendChild(botMessageDiv);
+
+      // Close the chatbot window after receiving "thank you" from the user
+      if (userMessage.toLowerCase() === 'thank you') {
+        setTimeout(function() {
+          var chatbotWindow = document.getElementById("chatbot-window");
+          var chatbotContent = document.getElementById("chatbot-content");
+
+          // Clear the conversation and close the window
+          chatbotContent.innerHTML = ''; // Clear chat content
+          chatbotWindow.style.display = 'none'; // Hide the chat window
+        }, 5000); // Delay to allow user to see the last message
+      }
+
+      // Clear the input field after sending the message
+      document.getElementById("user-message").value = '';
+    }
+  };
+
+  // Send the user's message to PHP
+  xhr.send("message=" + encodeURIComponent(userMessage));
+}
+</script>
+
 <!-- /Resent Cat --> 
 
 <!-- Fun Facts-->
@@ -240,8 +323,9 @@ foreach($results as $result)
 <script src="assets/js/slick.min.js"></script> 
 <script src="assets/js/owl.carousel.min.js"></script>
 
+
+
 </body>
 
 <!-- Mirrored from themes.webmasterdriver.net/carforyou/demo/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Jun 2017 07:22:11 GMT -->
 </html>
-
