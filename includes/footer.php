@@ -1,4 +1,5 @@
 <?php
+global $dbh;
 if(isset($_POST['emailsubscibe']))
 {
 $subscriberemail=$_POST['subscriberemail'];

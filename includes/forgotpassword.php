@@ -1,28 +1,34 @@
 <?php
-if(isset($_POST['update']))
-  {
-$email=$_POST['email'];
-$mobile=$_POST['mobile'];
-$newpassword=md5($_POST['newpassword']);
-  $sql ="SELECT EmailId FROM tblusers WHERE EmailId=:email and ContactNo=:mobile";
-$query= $dbh -> prepare($sql);
-$query-> bindParam(':email', $email, PDO::PARAM_STR);
-$query-> bindParam(':mobile', $mobile, PDO::PARAM_STR);
-$query-> execute();
-$results = $query -> fetchAll(PDO::FETCH_OBJ);
-if($query -> rowCount() > 0)
-{
-$con="update tblusers set Password=:newpassword where EmailId=:email and ContactNo=:mobile";
-$chngpwd1 = $dbh->prepare($con);
-$chngpwd1-> bindParam(':email', $email, PDO::PARAM_STR);
-$chngpwd1-> bindParam(':mobile', $mobile, PDO::PARAM_STR);
-$chngpwd1-> bindParam(':newpassword', $newpassword, PDO::PARAM_STR);
-$chngpwd1->execute();
-echo "<script>alert('Your Password succesfully changed');</script>";
-}
-else {
-echo "<script>alert('Email id or Mobile no is invalid');</script>"; 
-}
+global $dbh;
+
+if (isset($_POST['update'])) {
+    // Sanitize user inputs
+    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+    $mobile = filter_var($_POST['mobile'], FILTER_SANITIZE_STRING);
+    $newpassword = password_hash($_POST['newpassword'], PASSWORD_DEFAULT); // Use password_hash for better security
+
+    // Prepare the SQL statement to prevent SQL injection
+    $sql = "SELECT EmailId FROM tblusers WHERE EmailId = :email AND ContactNo = :mobile";
+    $query = $dbh->prepare($sql);
+    $query->bindParam(':email', $email, PDO::PARAM_STR);
+    $query->bindParam(':mobile', $mobile, PDO::PARAM_STR);
+    $query->execute();
+
+    // Check if the user exists
+    if ($query->rowCount() > 0) {
+        $con = "UPDATE tblusers SET Password = :newpassword WHERE EmailId = :email AND ContactNo = :mobile";
+        $chngpwd1 = $dbh->prepare($con);
+        $chngpwd1->bindParam(':email', $email, PDO::PARAM_STR);
+        $chngpwd1->bindParam(':mobile', $mobile, PDO::PARAM_STR);
+        $chngpwd1->bindParam(':newpassword', $newpassword, PDO::PARAM_STR);
+        $chngpwd1->execute();
+
+        // Redirect or display a success message
+        echo "<script>alert('Your Password has been successfully changed.'); window.location.href='login.php';</script>";
+    } else {
+        // Redirect or display an error message
+        echo "<script>alert('Email ID or Mobile number is invalid.'); window.location.href='forgotpassword.php';</script>";
+    }
 }
 
 ?>

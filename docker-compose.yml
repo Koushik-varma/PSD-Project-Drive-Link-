@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"  # Expose port 8080 for web access
+    networks:
+      - app_network
+    volumes:
+      - .:/var/www/html
+
+networks:
+  app_network:
